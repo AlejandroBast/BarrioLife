@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bufugq11bgkiv"]
+
+[ext_resource type="Script" uid="uid://kc1walgs6753" path="res://scripts/BattleNPC.gd" id="1_battle_npc_script"]
+
+[node name="BattleNPC" type="Node2D" unique_id=676181667]
+script = ExtResource("1_battle_npc_script")
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=2038110292]
+color = Color(0, 0, 0, 0.28)
+polygon = PackedVector2Array(-70, -8, -35, -22, 35, -22, 70, -8, 35, 6, -35, 6)
+
+[node name="Body" type="Node2D" parent="." unique_id=1908305303]
+
+[node name="Sprite2D" type="Sprite2D" parent="Body" unique_id=2123345936]
+position = Vector2(0, -154)
+scale = Vector2(0.26, 0.26)
+
+[node name="MissingImageLabel" type="Label" parent="." unique_id=2069435481]
+visible = false
+offset_left = -110.0
+offset_top = -245.0
+offset_right = 110.0
+offset_bottom = -185.0
+theme_override_font_sizes/font_size = 14
+text = "Falta assets/sprites/battle_npc.png"
+horizontal_alignment = 1
+autowrap_mode = 3
