@@ -1,0 +1,10 @@
+res://scripts/BattleScene.gd
+res://scripts/DefeatScreen.gd
+res://scripts/TutorialLevel.gd
+res://scenes/DefeatScreen.tscn
+res://scenes/PauseMenu.tscn
+res://scenes/BattleNPC.tscn
+res://scripts/VictoryScreen.gd
+res://scripts/GameState.gd
+res://scripts/MainMenu.gd
+res://scripts/WorldMap.gd
