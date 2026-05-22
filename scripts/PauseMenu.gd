@@ -5,6 +5,7 @@ const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	layer = 100
 	get_tree().paused = true
 	_build_ui()
 
@@ -49,7 +50,7 @@ func _build_ui() -> void:
 	resume_button.pressed.connect(_on_resume_pressed)
 	box.add_child(resume_button)
 
-	var menu_button := _make_button("Menú principal")
+	var menu_button := _make_button("Menu principal")
 	menu_button.pressed.connect(_on_menu_pressed)
 	box.add_child(menu_button)
 

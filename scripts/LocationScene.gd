@@ -1,5 +1,7 @@
 extends Node2D
 
+const PAUSE_MENU_SCENE = preload("res://scenes/PauseMenu.tscn")
+
 @onready var title_label: Label = $UI/Panel/Content/TitleLabel
 @onready var description_label: Label = $UI/Panel/Content/DescriptionLabel
 @onready var objective_label: Label = $UI/Panel/Content/ObjectiveLabel
@@ -14,7 +16,8 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-		get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+		get_viewport().set_input_as_handled()
+		_open_pause_menu()
 
 
 func _refresh_location() -> void:
@@ -65,3 +68,11 @@ func _get_objective_text(location_id: String) -> String:
 			return "Objetivo final disponible."
 		_:
 			return "Presiona M para abrir el mapa."
+
+
+func _open_pause_menu() -> void:
+	if get_tree().paused or has_node("PauseMenu"):
+		return
+
+	var pause_menu := PAUSE_MENU_SCENE.instantiate()
+	add_child(pause_menu)

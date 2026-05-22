@@ -11,3 +11,4 @@ res://scripts/WorldMap.gd
 res://scripts/FarmLevel.gd
 res://scripts/TownLevel.gd
 res://scripts/LocationScene.gd
+res://scripts/PauseMenu.gd

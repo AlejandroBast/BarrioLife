@@ -1,5 +1,6 @@
 extends Node2D
 
+const PAUSE_MENU_SCENE = preload("res://scenes/PauseMenu.tscn")
 const FLOOR_TOP_Y = 620.0
 const FLOOR_HEIGHT = 72.0
 const BACKGROUND_TARGET_HEIGHT = 720.0
@@ -45,7 +46,8 @@ func _process(_delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
-		get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+		get_viewport().set_input_as_handled()
+		_open_pause_menu()
 
 
 func _build_backgrounds() -> float:
@@ -165,3 +167,11 @@ func _on_farm_objective_trigger_body_entered(body: Node2D) -> void:
 func _on_farm_objective_trigger_body_exited(body: Node2D) -> void:
 	if body == player:
 		can_complete_objective = false
+
+
+func _open_pause_menu() -> void:
+	if get_tree().paused or has_node("PauseMenu"):
+		return
+
+	var pause_menu := PAUSE_MENU_SCENE.instantiate()
+	add_child(pause_menu)
