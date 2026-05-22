@@ -5,6 +5,7 @@ const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 
 func _ready() -> void:
+	MusicManager.stop_music()
 	if GameState.current_location_id == "neighborhood":
 		GameState.complete_objective("first_battle_won")
 	_build_ui()

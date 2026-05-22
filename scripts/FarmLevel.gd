@@ -4,6 +4,7 @@ const FLOOR_TOP_Y = 620.0
 const FLOOR_HEIGHT = 72.0
 const BACKGROUND_TARGET_HEIGHT = 720.0
 const BACKGROUND_BLEND_WIDTH = 320.0
+const FARM_MUSIC = "res://assets/audio/granja-fondo.mp3"
 const BACKGROUND_PATHS: Array[String] = [
 	"res://assets/sprites/farm_bg_01.png",
 	"res://assets/sprites/farm_bg_02.png",
@@ -28,6 +29,7 @@ var objective_completed: bool = false
 
 func _ready() -> void:
 	GameState.set_current_location("farm")
+	MusicManager.play_music(FARM_MUSIC)
 	level_width = _build_backgrounds()
 	_configure_level_bounds()
 	_refresh_ui()

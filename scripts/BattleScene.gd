@@ -74,6 +74,7 @@ var intro_label: Label
 
 
 func _ready() -> void:
+	MusicManager.stop_music()
 	_build_battle()
 
 

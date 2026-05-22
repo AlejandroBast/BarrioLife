@@ -19,6 +19,7 @@ var stage_revealed: bool = false
 
 
 func _ready() -> void:
+	MusicManager.stop_music()
 	_update_tutorial_text()
 
 

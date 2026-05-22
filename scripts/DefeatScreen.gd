@@ -6,6 +6,7 @@ const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 
 func _ready() -> void:
+	MusicManager.stop_music()
 	_build_ui()
 
 

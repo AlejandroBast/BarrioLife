@@ -7,6 +7,7 @@ extends Node2D
 
 
 func _ready() -> void:
+	MusicManager.stop_music()
 	complete_button.pressed.connect(_on_complete_pressed)
 	_refresh_location()
 
