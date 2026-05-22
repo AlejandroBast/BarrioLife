@@ -5,9 +5,8 @@ const FLOOR_HEIGHT = 72.0
 const BACKGROUND_TARGET_HEIGHT = 720.0
 const BACKGROUND_BLEND_WIDTH = 320.0
 const BACKGROUND_PATHS: Array[String] = [
-	"res://assets/sprites/farm_bg_01.png",
-	"res://assets/sprites/farm_bg_02.png",
-	"res://assets/sprites/farm_bg_03.png",
+	"res://assets/sprites/town_bg_01.png",
+	"res://assets/sprites/town_bg_02.png",
 ]
 
 @onready var background_segments: Node2D = $BackgroundSegments
@@ -16,29 +15,29 @@ const BACKGROUND_PATHS: Array[String] = [
 @onready var floor_collision: CollisionShape2D = $Floor/FloorCollision
 @onready var left_wall: StaticBody2D = $LeftWall
 @onready var right_wall: StaticBody2D = $RightWall
-@onready var objective_trigger: Area2D = $FarmObjectiveTrigger
+@onready var mission_trigger: Area2D = $TownMissionTrigger
 @onready var objective_label: Label = $UI/ObjectivePanel/ObjectiveLabel
 @onready var interact_panel: PanelContainer = $UI/InteractPanel
 @onready var interact_label: Label = $UI/InteractPanel/InteractLabel
 
 var level_width: float = 1280.0
-var can_complete_objective: bool = false
-var objective_completed: bool = false
+var can_complete_mission: bool = false
+var mission_completed: bool = false
 
 
 func _ready() -> void:
-	GameState.set_current_location("farm")
+	GameState.set_current_location("town")
 	level_width = _build_backgrounds()
 	_configure_level_bounds()
 	_refresh_ui()
 
 
 func _process(_delta: float) -> void:
-	can_complete_objective = _is_player_near_objective()
-	interact_panel.visible = can_complete_objective and not objective_completed
+	can_complete_mission = _is_player_near_mission()
+	interact_panel.visible = can_complete_mission and not mission_completed
 
-	if can_complete_objective and not objective_completed and Input.is_key_pressed(KEY_E):
-		_complete_farm_objective()
+	if can_complete_mission and not mission_completed and Input.is_key_pressed(KEY_E):
+		_complete_town_mission()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -117,7 +116,7 @@ func _configure_level_bounds() -> void:
 	floor_body.position = Vector2(level_width * 0.5, FLOOR_TOP_Y + FLOOR_HEIGHT * 0.5)
 	left_wall.position = Vector2(-16.0, 360.0)
 	right_wall.position = Vector2(level_width + 16.0, 360.0)
-	objective_trigger.position = Vector2(level_width - 220.0, FLOOR_TOP_Y - 95.0)
+	mission_trigger.position = Vector2(level_width - 230.0, FLOOR_TOP_Y - 95.0)
 
 	var floor_shape := RectangleShape2D.new()
 	floor_shape.size = Vector2(level_width, FLOOR_HEIGHT)
@@ -132,34 +131,34 @@ func _configure_level_bounds() -> void:
 
 
 func _refresh_ui() -> void:
-	objective_completed = GameState.is_objective_completed("farm_tutorial_completed")
-	if objective_completed:
-		objective_label.text = "Granja: objetivo completado\nPueblo desbloqueado. Presiona M para abrir el mapa."
+	mission_completed = GameState.is_objective_completed("town_mission_completed")
+	if mission_completed:
+		objective_label.text = "Pueblo: mision completada\nBarrio desbloqueado. Presiona M para abrir el mapa."
 	else:
-		objective_label.text = "Granja\nExplora el camino y llega al final.\nPresiona M para abrir el mapa."
+		objective_label.text = "Pueblo\nCamina por la plaza y habla con la gente.\nPresiona M para abrir el mapa."
 
-	interact_label.text = "Presiona E para completar el objetivo de la granja"
+	interact_label.text = "Presiona E para completar la mision del pueblo"
 
 
-func _is_player_near_objective() -> bool:
-	if player == null or objective_trigger == null:
+func _is_player_near_mission() -> bool:
+	if player == null or mission_trigger == null:
 		return false
 
-	return player.global_position.distance_to(objective_trigger.global_position) <= 210.0
+	return player.global_position.distance_to(mission_trigger.global_position) <= 210.0
 
 
-func _complete_farm_objective() -> void:
-	objective_completed = true
-	GameState.complete_objective("farm_tutorial_completed")
+func _complete_town_mission() -> void:
+	mission_completed = true
+	GameState.complete_objective("town_mission_completed")
 	interact_panel.visible = false
 	_refresh_ui()
 
 
-func _on_farm_objective_trigger_body_entered(body: Node2D) -> void:
+func _on_town_mission_trigger_body_entered(body: Node2D) -> void:
 	if body == player:
-		can_complete_objective = true
+		can_complete_mission = true
 
 
-func _on_farm_objective_trigger_body_exited(body: Node2D) -> void:
+func _on_town_mission_trigger_body_exited(body: Node2D) -> void:
 	if body == player:
-		can_complete_objective = false
+		can_complete_mission = false

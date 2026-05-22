@@ -5,6 +5,7 @@ signal objective_completed(objective_id: String)
 signal location_changed(location_id: String)
 
 const FARM_SCENE = "res://scenes/FarmLevel.tscn"
+const TOWN_SCENE = "res://scenes/TownLevel.tscn"
 const GENERIC_LOCATION_SCENE = "res://scenes/LocationScene.tscn"
 
 var current_location_id: String = "farm"
@@ -36,7 +37,7 @@ var mapLocations: Array[Dictionary] = [
 		"unlockRequirement": "Completa el tutorial de la granja.",
 		"requiredObjective": "farm_tutorial_completed",
 		"scene": "TownScene",
-		"scene_path": GENERIC_LOCATION_SCENE,
+		"scene_path": TOWN_SCENE,
 	},
 	{
 		"id": "neighborhood",

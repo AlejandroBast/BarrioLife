@@ -8,3 +8,5 @@ res://scripts/VictoryScreen.gd
 res://scripts/GameState.gd
 res://scripts/MainMenu.gd
 res://scripts/WorldMap.gd
+res://scripts/FarmLevel.gd
+res://scripts/TownLevel.gd
