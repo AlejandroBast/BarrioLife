@@ -1,0 +1,174 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_player_scene"]
+[ext_resource type="Script" path="res://scripts/TutorialLevel.gd" id="2_tutorial_script"]
+[ext_resource type="PackedScene" path="res://scenes/BattleNPC.tscn" id="3_battle_npc_scene"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1800, 72)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 420)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(240, 260)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui_panel"]
+bg_color = Color(0.055, 0.059, 0.075, 0.78)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trigger_panel"]
+bg_color = Color(0.092, 0.082, 0.105, 0.82)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+
+[node name="TutorialLevel" type="Node2D"]
+script = ExtResource("2_tutorial_script")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -10
+
+[node name="Sky" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09, 0.10, 0.13, 1)
+
+[node name="StreetBack" type="ColorRect" parent="Background"]
+anchors_preset = 10
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 420.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.13, 0.12, 0.13, 1)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(900, 556)
+collision_layer = 1
+collision_mask = 1
+
+[node name="FloorVisual" type="Polygon2D" parent="Floor"]
+color = Color(0.18, 0.16, 0.15, 1)
+polygon = PackedVector2Array(-900, -36, 900, -36, 900, 36, -900, 36)
+
+[node name="FloorCollision" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-16, 350)
+
+[node name="LeftWallCollision" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1816, 350)
+
+[node name="RightWallCollision" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Player" parent="." instance=ExtResource("1_player_scene")]
+position = Vector2(120, 520)
+z_index = 5
+
+[node name="PracticeStage" type="Node2D" parent="."]
+position = Vector2(1600, 550)
+z_index = 1
+
+[node name="StageBack" type="Polygon2D" parent="PracticeStage"]
+color = Color(0.08, 0.065, 0.09, 1)
+polygon = PackedVector2Array(-170, -190, 170, -190, 210, -18, -210, -18)
+
+[node name="StageFloor" type="Polygon2D" parent="PracticeStage"]
+color = Color(0.19, 0.16, 0.18, 1)
+polygon = PackedVector2Array(-250, -20, 250, -20, 210, 36, -210, 36)
+
+[node name="StageTrim" type="Line2D" parent="PracticeStage"]
+points = PackedVector2Array(-210, -18, 210, -18)
+width = 6.0
+default_color = Color(0.62, 0.22, 0.8, 1)
+
+[node name="LeftSpotlight" type="Line2D" parent="PracticeStage"]
+points = PackedVector2Array(-150, -185, -75, -20)
+width = 5.0
+default_color = Color(0.9, 0.82, 0.44, 0.35)
+
+[node name="RightSpotlight" type="Line2D" parent="PracticeStage"]
+points = PackedVector2Array(150, -185, 75, -20)
+width = 5.0
+default_color = Color(0.9, 0.82, 0.44, 0.35)
+
+[node name="BattleTrigger" type="Area2D" parent="."]
+position = Vector2(1600, 450)
+z_index = 2
+collision_layer = 2
+collision_mask = 1
+
+[node name="TriggerCollision" type="CollisionShape2D" parent="BattleTrigger"]
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="TriggerVisual" type="Polygon2D" parent="BattleTrigger"]
+z_index = -1
+color = Color(0.56, 0.18, 0.75, 0.24)
+polygon = PackedVector2Array(-95, 68, -45, 45, 45, 45, 95, 68, 45, 96, -45, 96)
+
+[node name="BattleNPC" parent="BattleTrigger" instance=ExtResource("3_battle_npc_scene")]
+position = Vector2(0, 70)
+z_index = 4
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HelpPanel" type="PanelContainer" parent="UI"]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 390.0
+offset_bottom = 170.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ui_panel")
+
+[node name="HelpLabel" type="Label" parent="UI/HelpPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Tutorial\nD: caminar hacia la derecha"
+autowrap_mode = 3
+
+[node name="InteractPanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -295.0
+offset_top = -165.0
+offset_right = 295.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_trigger_panel")
+
+[node name="InteractLabel" type="Label" parent="UI/InteractPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+horizontal_alignment = 1
+text = "Escenario de practica\nPresiona E para cantar\nEn combate, presiona la tecla que coincida con la nota."
+autowrap_mode = 3
+
+[connection signal="body_entered" from="BattleTrigger" to="." method="_on_battle_trigger_body_entered"]
+[connection signal="body_exited" from="BattleTrigger" to="." method="_on_battle_trigger_body_exited"]
