@@ -8,6 +8,7 @@ const FLOOR_HEIGHT = 72.0
 const BACKGROUND_TARGET_HEIGHT = 720.0
 const BACKGROUND_BLEND_WIDTH = 320.0
 const BATTLE_DISTANCE = 230.0
+const NEIGHBORHOOD_MUSIC = "res://assets/audio/barrio-fondo.mp3"
 const BACKGROUND_PATHS: Array[String] = [
 	"res://assets/sprites/neighborhood_bg_01.png",
 	"res://assets/sprites/neighborhood_bg_02.png",
@@ -32,7 +33,7 @@ var battle_completed: bool = false
 
 func _ready() -> void:
 	GameState.set_current_location("neighborhood")
-	MusicManager.stop_music()
+	MusicManager.play_music(NEIGHBORHOOD_MUSIC)
 	level_width = _build_backgrounds()
 	_configure_level_bounds()
 	_refresh_ui()

@@ -6,3 +6,6 @@ res://scripts/Player.gd
 res://scripts/TutorialLevel.gd
 res://scripts/WorldMap.gd
 res://scripts/SettingsManager.gd
+res://scripts/GameState.gd
+res://scripts/VictoryScreen.gd
+res://scripts/NeighborhoodLevel.gd
