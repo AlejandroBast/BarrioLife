@@ -157,7 +157,7 @@ func _can_open_in_current_scene() -> bool:
 	if current_scene == null:
 		return false
 
-	return current_scene.name in ["FarmLevel", "TownLevel", "LocationScene"]
+	return current_scene.name in ["FarmLevel", "TownLevel", "NeighborhoodLevel", "LocationScene"]
 
 
 func _refresh_map() -> void:

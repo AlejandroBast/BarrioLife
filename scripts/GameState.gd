@@ -6,6 +6,7 @@ signal location_changed(location_id: String)
 
 const FARM_SCENE = "res://scenes/FarmLevel.tscn"
 const TOWN_SCENE = "res://scenes/TownLevel.tscn"
+const NEIGHBORHOOD_SCENE = "res://scenes/NeighborhoodLevel.tscn"
 const GENERIC_LOCATION_SCENE = "res://scenes/LocationScene.tscn"
 
 var current_location_id: String = "farm"
@@ -47,7 +48,7 @@ var mapLocations: Array[Dictionary] = [
 		"unlockRequirement": "Completa la mision principal del pueblo.",
 		"requiredObjective": "town_mission_completed",
 		"scene": "NeighborhoodScene",
-		"scene_path": GENERIC_LOCATION_SCENE,
+		"scene_path": NEIGHBORHOOD_SCENE,
 	},
 	{
 		"id": "city",
