@@ -5,12 +5,14 @@
 barrio-fondo.mp3::AudioStreamMP3::7486481827834165092::1779518707::1779518851::1::::<><><>0<>0<>fcc12ce1037aef69827488cece728bc4<>res://.godot/imported/barrio-fondo.mp3-8ce04af420473712f69e80082ce17a48.mp3str::
 granja-fondo.mp3::AudioStreamMP3::96937626396983579::1779424341::1779427232::1::::<><><>0<>0<>1a6320bb28214ad99958d4ac123dd31d<>res://.godot/imported/granja-fondo.mp3-a7c199fca9ce6b43ff8eb74bc0cfa01c.mp3str::
 pueblo-fondo.mp3::AudioStreamMP3::7566809511128738766::1779426341::1779427231::1::::<><><>0<>0<>68ac2a7ed3484e23fd33ffc210c9bb4d<>res://.godot/imported/pueblo-fondo.mp3-c3755f38c1b629a98cdd4861bda0b49a.mp3str::
-::res://assets/sprites/::1779522912
+::res://assets/sprites/::1779528056
 cow.png::CompressedTexture2D::6559977665858984793::1779520076::1779523910::1::::<><><>0<>0<>682e4552ae1fc20214da94d2ee753f9e<>res://.godot/imported/cow.png-58038d56c4af09000d1775ba3cf4dc15.ctex::
 cow_udder.png::CompressedTexture2D::7627344439682044297::1779522540::1779523910::1::::<><><>0<>0<>1c9ad1a34cf5135583d5d97011ac7116<>res://.godot/imported/cow_udder.png-09aa10ec794953ffa20526d77f6e4d31.ctex::
 farm_bg_01.png::CompressedTexture2D::2916768669260396173::1779421754::1779422264::1::::<><><>0<>0<>9e18d3b952bffd7b28940e7b788b61fa<>res://.godot/imported/farm_bg_01.png-d4f5758149756111e7a4d32532d99887.ctex::
 farm_bg_02.png::CompressedTexture2D::1485814957619538322::1779421764::1779422264::1::::<><><>0<>0<>d5fe9854b2238ab8c89421b3256254aa<>res://.godot/imported/farm_bg_02.png-e4fd3e3c789782264e46d5a4a836aa6e.ctex::
 farm_bg_03.png::CompressedTexture2D::2698975717575420363::1779421764::1779422264::1::::<><><>0<>0<>5407849e3bb07a67c992ebb2be3cc1b5<>res://.godot/imported/farm_bg_03.png-c8432b442be36f3b3b065b2f018eeb30.ctex::
+milk_bucket_empty.png::CompressedTexture2D::226459421834529747::1779525785::1779528650::1::::<><><>0<>0<>1c5948b6eb9409a9a76465edc4c8115b<>res://.godot/imported/milk_bucket_empty.png-2c00b96af21c91f837be2914898fe932.ctex::
+milk_bucket_full.png::CompressedTexture2D::3537450507595613641::1779525785::1779528056::1::::<><><>0<>0<>6dd1c72d015a637fa142f63385ba652b<>res://.godot/imported/milk_bucket_full.png-5ff94abc6474b2c923f34c6a6811f815.ctex::
 neighborhood_bg_01.png::CompressedTexture2D::7321709957891473315::1779517709::1779518142::1::::<><><>0<>0<>11b3a907c929b4da07b3e66fb5227624<>res://.godot/imported/neighborhood_bg_01.png-1aebe4d2de509b2b9239ee8362f78517.ctex::
 neighborhood_bg_02.png::CompressedTexture2D::7550630683610144021::1779517728::1779518142::1::::<><><>0<>0<>ed1d19ae0f5b1e60d35998345cc7266d<>res://.godot/imported/neighborhood_bg_02.png-fd1e89fecffd678951c2389b60c139d8.ctex::
 player_walk.png::CompressedTexture2D::5591717712743047325::1779082407::1779082554::1::::<><><>0<>0<>664c0e361a05e64368c4e604ba757340<>res://.godot/imported/player_walk.png-f9563979fa75f138a78c66bd5984c9e5.ctex::
@@ -33,7 +35,7 @@ TownLevel.tscn::PackedScene::-1::1779425117::0::1::::<><><>0<>0<><>::
 TutorialLevel.tscn::PackedScene::-1::1779419750::0::1::::<><><>0<>0<><>::res://scenes/Player.tscn<>res://scripts/TutorialLevel.gd<>res://scenes/BattleNPC.tscn
 VictoryScreen.tscn::PackedScene::-1::1779079708::0::1::::<><><>0<>0<><>::res://scripts/VictoryScreen.gd
 WorldMap.tscn::PackedScene::-1::1779421036::0::1::::<><><>0<>0<><>::
-::res://scripts/::1779523300
+::res://scripts/::1779523909
 BattleNPC.gd::GDScript::707635138457050800::1779086974::0::1::::<>Node2D<><>0<>0<><>::
 BattleScene.gd::GDScript::2992334643510252813::1779515595::0::1::::<>Node2D<><>0<>0<><>::
 CowInteractable.gd::GDScript::1867307557285227399::1779523446::0::1::::CowInteractable<>Area2D<><>0<>0<><>::
@@ -43,7 +45,7 @@ GameState.gd::GDScript::8278354145127457736::1779517936::0::1::::<>Node<><>0<>0<
 HitCircle.gd::GDScript::6586136563606316591::1779523159::0::1::::HitCircle<>Control<><>0<>0<><>::
 LocationScene.gd::GDScript::4843809135166486391::1779515480::0::1::::<>Node2D<><>0<>0<><>::
 MainMenu.gd::GDScript::8901831730655566958::1779515621::0::1::::<>Control<><>0<>0<><>::
-MilkingMinigame.gd::GDScript::582991384461050982::1779523580::0::1::::<>Control<><>0<>0<><>::
+MilkingMinigame.gd::GDScript::582991384461050982::1779528368::0::1::::<>Control<><>0<>0<><>::
 MusicManager.gd::GDScript::6013858519640775719::1779516502::0::1::::<>Node<><>0<>0<><>::
 NeighborhoodLevel.gd::GDScript::3490630002324679148::1779518786::0::1::::<>Node2D<><>0<>0<><>::
 OptionsPanel.gd::GDScript::5640814566091740833::1779515250::0::1::::OptionsPanel<>CanvasLayer<><>0<>0<><>::

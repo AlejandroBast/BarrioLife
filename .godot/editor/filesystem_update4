@@ -9,3 +9,4 @@ res://scripts/SettingsManager.gd
 res://scripts/GameState.gd
 res://scripts/VictoryScreen.gd
 res://scripts/NeighborhoodLevel.gd
+res://scripts/MilkingMinigame.gd
