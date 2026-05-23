@@ -2,10 +2,13 @@ extends CanvasLayer
 
 const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
+var options_panel: OptionsPanel
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 100
+	MusicManager.pause_music()
 	get_tree().paused = true
 	_build_ui()
 
@@ -50,13 +53,20 @@ func _build_ui() -> void:
 	resume_button.pressed.connect(_on_resume_pressed)
 	box.add_child(resume_button)
 
+	var options_button := _make_button("Opciones")
+	options_button.pressed.connect(_on_options_pressed)
+	box.add_child(options_button)
+
 	var menu_button := _make_button("Menu principal")
 	menu_button.pressed.connect(_on_menu_pressed)
 	box.add_child(menu_button)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event is InputEventKey and event.pressed and not event.echo and event.is_action_pressed("pause_game"):
+		if options_panel != null and is_instance_valid(options_panel):
+			return
+
 		get_viewport().set_input_as_handled()
 		_on_resume_pressed()
 
@@ -70,10 +80,23 @@ func _make_button(text: String) -> Button:
 
 
 func _on_resume_pressed() -> void:
+	MusicManager.resume_music()
 	get_tree().paused = false
 	queue_free()
 
 
+func _on_options_pressed() -> void:
+	if options_panel != null and is_instance_valid(options_panel):
+		return
+
+	options_panel = OptionsPanel.new()
+	options_panel.closed.connect(func() -> void:
+		options_panel = null
+	)
+	add_child(options_panel)
+
+
 func _on_menu_pressed() -> void:
 	get_tree().paused = false
+	MusicManager.stop_music(0.2)
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE)

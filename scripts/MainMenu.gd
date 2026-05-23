@@ -3,6 +3,8 @@ extends Control
 const TUTORIAL_SCENE = "res://scenes/TutorialLevel.tscn"
 
 var controls_panel: PanelContainer
+var controls_body_label: Label
+var options_panel: OptionsPanel
 
 
 func _ready() -> void:
@@ -54,6 +56,10 @@ func _build_ui() -> void:
 	controls_button.pressed.connect(_on_controls_pressed)
 	menu.add_child(controls_button)
 
+	var options_button := _make_button("Opciones")
+	options_button.pressed.connect(_on_options_pressed)
+	menu.add_child(options_button)
+
 	var quit_button := _make_button("Salir")
 	quit_button.pressed.connect(_on_quit_pressed)
 	menu.add_child(quit_button)
@@ -101,11 +107,11 @@ func _make_controls_panel() -> PanelContainer:
 	title.add_theme_font_size_override("font_size", 30)
 	content.add_child(title)
 
-	var body := Label.new()
-	body.text = "A / D: moverte\nE: interactuar\nESC: pausar\nBatalla: A/S/W/D o flechas"
-	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	body.add_theme_font_size_override("font_size", 20)
-	content.add_child(body)
+	controls_body_label = Label.new()
+	controls_body_label.text = _get_controls_text()
+	controls_body_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	controls_body_label.add_theme_font_size_override("font_size", 20)
+	content.add_child(controls_body_label)
 
 	var close_button := _make_button("Cerrar")
 	close_button.pressed.connect(func() -> void: controls_panel.visible = false)
@@ -123,7 +129,32 @@ func _on_tutorial_pressed() -> void:
 
 
 func _on_controls_pressed() -> void:
+	controls_body_label.text = _get_controls_text()
 	controls_panel.visible = true
+
+
+func _get_controls_text() -> String:
+	return "%s / %s: moverte\n%s: interactuar\n%s: pausar\nBatalla: %s / %s / %s / %s" % [
+		SettingsManager.get_action_label("move_left"),
+		SettingsManager.get_action_label("move_right"),
+		SettingsManager.get_action_label("interact"),
+		SettingsManager.get_action_label("pause_game"),
+		SettingsManager.get_action_label("note_left"),
+		SettingsManager.get_action_label("note_down"),
+		SettingsManager.get_action_label("note_up"),
+		SettingsManager.get_action_label("note_right"),
+	]
+
+
+func _on_options_pressed() -> void:
+	if options_panel != null and is_instance_valid(options_panel):
+		return
+
+	options_panel = OptionsPanel.new()
+	options_panel.closed.connect(func() -> void:
+		options_panel = null
+	)
+	add_child(options_panel)
 
 
 func _on_quit_pressed() -> void:
