@@ -21,6 +21,7 @@ config/features=PackedStringArray("4.6")
 [autoload]
 
 GameState="*res://scripts/GameState.gd"
+SettingsManager="*res://scripts/SettingsManager.gd"
 WorldMap="*res://scenes/WorldMap.tscn"
 MusicManager="*res://scripts/MusicManager.gd"
 
