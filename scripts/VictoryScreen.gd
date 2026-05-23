@@ -1,6 +1,7 @@
 extends Control
 
 const TUTORIAL_SCENE = "res://scenes/TutorialLevel.tscn"
+const NEIGHBORHOOD_SCENE = "res://scenes/NeighborhoodLevel.tscn"
 const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 
@@ -33,9 +34,15 @@ func _build_ui() -> void:
 	title.add_theme_font_size_override("font_size", 46)
 	box.add_child(title)
 
-	var tutorial_button := _make_button("Volver al tutorial")
-	tutorial_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(TUTORIAL_SCENE))
-	box.add_child(tutorial_button)
+	var return_scene := TUTORIAL_SCENE
+	var return_text := "Volver al tutorial"
+	if GameState.current_location_id == "neighborhood":
+		return_scene = NEIGHBORHOOD_SCENE
+		return_text = "Volver al barrio"
+
+	var return_button := _make_button(return_text)
+	return_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(return_scene))
+	box.add_child(return_button)
 
 	var menu_button := _make_button("Menu principal")
 	menu_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(MAIN_MENU_SCENE))
