@@ -39,12 +39,12 @@ func _process(_delta: float) -> void:
 	can_complete_mission = _is_player_near_mission()
 	interact_panel.visible = can_complete_mission and not mission_completed
 
-	if can_complete_mission and not mission_completed and Input.is_key_pressed(KEY_E):
+	if can_complete_mission and not mission_completed and Input.is_action_pressed("interact"):
 		_complete_town_mission()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event is InputEventKey and event.pressed and not event.echo and event.is_action_pressed("pause_game"):
 		get_viewport().set_input_as_handled()
 		_open_pause_menu()
 

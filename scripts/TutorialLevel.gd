@@ -29,12 +29,12 @@ func _process(_delta: float) -> void:
 	_update_revealed_controls()
 	_update_tutorial_text()
 
-	if can_start_battle and Input.is_key_pressed(KEY_E):
+	if can_start_battle and Input.is_action_pressed("interact"):
 		_start_battle()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event is InputEventKey and event.pressed and not event.echo and event.is_action_pressed("pause_game"):
 		get_viewport().set_input_as_handled()
 		_open_pause_menu()
 
@@ -63,9 +63,9 @@ func _update_revealed_controls() -> void:
 		return
 
 	var player_x: float = player.global_position.x
-	if Input.is_key_pressed(KEY_A) or player_x >= 180.0:
+	if Input.is_action_pressed("move_left") or player_x >= 180.0:
 		left_revealed = true
-	if Input.is_key_pressed(KEY_D) or player_x >= 360.0:
+	if Input.is_action_pressed("move_right") or player_x >= 360.0:
 		right_revealed = true
 	if player_x >= 760.0:
 		pause_revealed = true
@@ -75,24 +75,28 @@ func _update_revealed_controls() -> void:
 
 func _update_tutorial_text() -> void:
 	var lines: Array[String] = ["Tutorial"]
+	var move_right_label := SettingsManager.get_action_label("move_right")
+	var move_left_label := SettingsManager.get_action_label("move_left")
+	var pause_label := SettingsManager.get_action_label("pause_game")
+	var interact_label_text := SettingsManager.get_action_label("interact")
 
 	if not right_revealed:
-		lines.append("D: caminar hacia la derecha")
+		lines.append("%s: caminar hacia la derecha" % move_right_label)
 	elif not left_revealed:
-		lines.append("A: caminar hacia la izquierda")
+		lines.append("%s: caminar hacia la izquierda" % move_left_label)
 	else:
-		lines.append("A: izquierda")
-		lines.append("D: derecha")
+		lines.append("%s: izquierda" % move_left_label)
+		lines.append("%s: derecha" % move_right_label)
 
 	if pause_revealed:
-		lines.append("ESC: pausar")
+		lines.append("%s: pausar" % pause_label)
 	if stage_revealed:
 		lines.append("Llega al escenario de practica")
 	if can_start_battle:
-		lines.append("E: hablar y empezar")
+		lines.append("%s: hablar y empezar" % interact_label_text)
 
 	help_label.text = _format_lines(lines)
-	interact_label.text = "Escenario de practica\nPresiona E para cantar\nEn combate, presiona la tecla que coincida con la nota."
+	interact_label.text = "Escenario de practica\nPresiona %s para cantar\nEn combate, presiona la tecla que coincida con la nota." % interact_label_text
 
 
 func _format_lines(lines: Array[String]) -> String:
