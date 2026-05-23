@@ -15,12 +15,6 @@ const HIT_SCORE = 100
 const INTRO_DURATION = 3.0
 
 const DIRECTIONS = ["left", "down", "up", "right"]
-const KEY_LABELS = {
-	"left": "A / Left",
-	"down": "S / Down",
-	"up": "W / Up",
-	"right": "D / Right",
-}
 const DIR_COLORS = {
 	"left": Color(0.95, 0.28, 0.24),
 	"down": Color(0.26, 0.66, 1.0),
@@ -98,12 +92,12 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ESCAPE:
+		if event.is_action_pressed("pause_game"):
 			get_viewport().set_input_as_handled()
 			_open_pause_menu()
 			return
 
-		var direction: String = _direction_from_key(event.keycode)
+		var direction: String = _direction_from_input(event)
 		if direction != "":
 			get_viewport().set_input_as_handled()
 			_try_hit(direction)
@@ -204,7 +198,7 @@ func _build_columns() -> void:
 		add_child(hit_zone)
 
 		var key_label := Label.new()
-		key_label.text = String(KEY_LABELS[direction])
+		key_label.text = _get_note_key_label(direction)
 		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		key_label.position = Vector2(x_position - 45.0, HIT_Y + 45.0)
 		key_label.size = Vector2(90.0, 28.0)
@@ -278,7 +272,13 @@ func _update_intro(delta: float) -> void:
 
 func _update_intro_text() -> void:
 	var seconds_left: int = int(ceil(intro_remaining))
-	intro_label.text = "Modo practica\nPresiona la tecla que coincida para cantar.\nA/S/W/D o flechas.\nEmpieza en %d..." % maxi(1, seconds_left)
+	intro_label.text = "Modo practica\nPresiona la tecla que coincida para cantar.\n%s / %s / %s / %s.\nEmpieza en %d..." % [
+		SettingsManager.get_action_label("note_left"),
+		SettingsManager.get_action_label("note_down"),
+		SettingsManager.get_action_label("note_up"),
+		SettingsManager.get_action_label("note_right"),
+		maxi(1, seconds_left),
+	]
 
 
 func _spawn_due_notes() -> void:
@@ -395,16 +395,29 @@ func _finish_battle(scene_path: String) -> void:
 	scene_tree.call_deferred("change_scene_to_file", scene_path)
 
 
-func _direction_from_key(keycode: Key) -> String:
-	match keycode:
-		KEY_A, KEY_LEFT:
-			return "left"
-		KEY_S, KEY_DOWN:
-			return "down"
-		KEY_W, KEY_UP:
-			return "up"
-		KEY_D, KEY_RIGHT:
-			return "right"
+func _direction_from_input(event: InputEvent) -> String:
+	if event.is_action_pressed("note_left"):
+		return "left"
+	if event.is_action_pressed("note_down"):
+		return "down"
+	if event.is_action_pressed("note_up"):
+		return "up"
+	if event.is_action_pressed("note_right"):
+		return "right"
+
+	return ""
+
+
+func _get_note_key_label(direction: String) -> String:
+	match direction:
+		"left":
+			return SettingsManager.get_action_label("note_left")
+		"down":
+			return SettingsManager.get_action_label("note_down")
+		"up":
+			return SettingsManager.get_action_label("note_up")
+		"right":
+			return SettingsManager.get_action_label("note_right")
 		_:
 			return ""
 
