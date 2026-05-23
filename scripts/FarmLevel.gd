@@ -1,6 +1,7 @@
 extends Node2D
 
 const PAUSE_MENU_SCENE = preload("res://scenes/PauseMenu.tscn")
+const MILKING_MINIGAME_SCENE = "res://scenes/MilkingMinigame.tscn"
 const FLOOR_TOP_Y = 620.0
 const FLOOR_HEIGHT = 72.0
 const BACKGROUND_TARGET_HEIGHT = 720.0
@@ -18,6 +19,7 @@ const BACKGROUND_PATHS: Array[String] = [
 @onready var floor_collision: CollisionShape2D = $Floor/FloorCollision
 @onready var left_wall: StaticBody2D = $LeftWall
 @onready var right_wall: StaticBody2D = $RightWall
+@onready var cow_interactable: CowInteractable = $CowInteractable
 @onready var objective_trigger: Area2D = $FarmObjectiveTrigger
 @onready var objective_label: Label = $UI/ObjectivePanel/ObjectiveLabel
 @onready var interact_panel: PanelContainer = $UI/InteractPanel
@@ -31,6 +33,7 @@ var objective_completed: bool = false
 func _ready() -> void:
 	GameState.set_current_location("farm")
 	MusicManager.play_music(FARM_MUSIC)
+	cow_interactable.interaction_requested.connect(_on_cow_milking_requested)
 	level_width = _build_backgrounds()
 	_configure_level_bounds()
 	_refresh_ui()
@@ -38,9 +41,22 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	can_complete_objective = _is_player_near_objective()
-	interact_panel.visible = can_complete_objective and not objective_completed
+	var can_milk_cow: bool = cow_interactable != null and cow_interactable.is_player_near()
+	var cow_completed: bool = GameState.is_objective_completed("farm_cow_milking_completed")
 
-	if can_complete_objective and not objective_completed and Input.is_action_pressed("interact"):
+	if can_milk_cow and not cow_completed:
+		interact_panel.visible = true
+		interact_label.text = "Presiona %s para ordeñar" % SettingsManager.get_action_label("interact")
+	elif can_complete_objective and not objective_completed:
+		interact_panel.visible = true
+		if cow_completed:
+			interact_label.text = "Presiona %s para completar el objetivo de la granja" % SettingsManager.get_action_label("interact")
+		else:
+			interact_label.text = "Primero ayuda con la vaca para completar la rutina de la granja"
+	else:
+		interact_panel.visible = false
+
+	if can_complete_objective and not objective_completed and Input.is_action_just_pressed("interact"):
 		_complete_farm_objective()
 
 
@@ -121,6 +137,7 @@ func _configure_level_bounds() -> void:
 	floor_body.position = Vector2(level_width * 0.5, FLOOR_TOP_Y + FLOOR_HEIGHT * 0.5)
 	left_wall.position = Vector2(-16.0, 360.0)
 	right_wall.position = Vector2(level_width + 16.0, 360.0)
+	cow_interactable.position = Vector2(760.0, FLOOR_TOP_Y - 2.0)
 	objective_trigger.position = Vector2(level_width - 220.0, FLOOR_TOP_Y - 95.0)
 
 	var floor_shape := RectangleShape2D.new()
@@ -139,10 +156,12 @@ func _refresh_ui() -> void:
 	objective_completed = GameState.is_objective_completed("farm_tutorial_completed")
 	if objective_completed:
 		objective_label.text = "Granja: objetivo completado\nPueblo desbloqueado. Presiona M para abrir el mapa."
+	elif GameState.is_objective_completed("farm_cow_milking_completed"):
+		objective_label.text = "Granja\nOrdeño completado. Ve al final del camino para cerrar el tutorial.\nPresiona M para abrir el mapa."
 	else:
-		objective_label.text = "Granja\nExplora el camino y llega al final.\nPresiona M para abrir el mapa."
+		objective_label.text = "Granja\nAcercate a la vaca y aprende a ordeñar.\nPresiona M para abrir el mapa."
 
-	interact_label.text = "Presiona E para completar el objetivo de la granja"
+	interact_label.text = "Presiona %s para interactuar" % SettingsManager.get_action_label("interact")
 
 
 func _is_player_near_objective() -> bool:
@@ -153,10 +172,21 @@ func _is_player_near_objective() -> bool:
 
 
 func _complete_farm_objective() -> void:
+	if not GameState.is_objective_completed("farm_cow_milking_completed"):
+		interact_label.text = "Primero ayuda con la vaca antes de completar el tutorial"
+		return
+
 	objective_completed = true
 	GameState.complete_objective("farm_tutorial_completed")
 	interact_panel.visible = false
 	_refresh_ui()
+
+
+func _on_cow_milking_requested() -> void:
+	if GameState.is_objective_completed("farm_cow_milking_completed"):
+		return
+
+	get_tree().change_scene_to_file(MILKING_MINIGAME_SCENE)
 
 
 func _on_farm_objective_trigger_body_entered(body: Node2D) -> void:
