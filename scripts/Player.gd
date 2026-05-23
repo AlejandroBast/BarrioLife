@@ -49,9 +49,9 @@ func _physics_process(delta: float) -> void:
 
 func _get_move_direction() -> float:
 	var direction := 0.0
-	if Input.is_key_pressed(KEY_A):
+	if Input.is_action_pressed("move_left"):
 		direction -= 1.0
-	if Input.is_key_pressed(KEY_D):
+	if Input.is_action_pressed("move_right"):
 		direction += 1.0
 	return direction
 

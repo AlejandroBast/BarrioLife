@@ -17,7 +17,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_M:
+	if event is InputEventKey and event.pressed and not event.echo and event.is_action_pressed("open_map"):
 		if not is_open and not _can_open_in_current_scene():
 			return
 		get_viewport().set_input_as_handled()
