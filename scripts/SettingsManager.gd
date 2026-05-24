@@ -164,3 +164,4 @@ func _center_window(size: Vector2i) -> void:
 		maxi(0, int((screen_size.y - size.y) * 0.5))
 	)
 	DisplayServer.window_set_position(target_position)
+	

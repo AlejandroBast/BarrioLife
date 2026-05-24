@@ -1,12 +1,16 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dq7uol4rqep6g"]
 
-[ext_resource type="Script" path="res://scripts/VictoryScreen.gd" id="1_victory_script"]
+[ext_resource type="Script" uid="uid://cam4f2rnb4wye" path="res://scripts/VictoryScreen.gd" id="1_victory_script"]
 
-[node name="VictoryScreen" type="Control"]
+[node name="VictoryScreen" type="Control" unique_id=1800970161]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -133.0
+offset_top = -148.0
+offset_right = -133.0
+offset_bottom = -148.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_victory_script")

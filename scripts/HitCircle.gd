@@ -66,15 +66,24 @@ func _draw() -> void:
 	var center := size * 0.5
 	var target_progress := clampf(age / target_time, 0.0, 1.0)
 	var approach_radius := lerpf(APPROACH_START_RADIUS, BASE_RADIUS, target_progress)
+	var pulse := 1.0 + sin(age * 18.0) * 0.035
 	var fill_color := circle_color
-	fill_color.a = 0.72
+	fill_color.a = 0.82
 	var ring_color := circle_color.lightened(0.34)
 	ring_color.a = 0.95
+	var shadow_color := Color(0.06, 0.025, 0.014, 0.52)
+	var dark_ring := Color(0.12, 0.055, 0.025, 0.9)
+	var highlight := Color.WHITE
+	highlight.a = 0.22
 
-	draw_circle(center, BASE_RADIUS, fill_color)
-	draw_arc(center, BASE_RADIUS, 0.0, TAU, 64, Color(0.12, 0.06, 0.03, 0.9), 4.0)
-	draw_arc(center, approach_radius, 0.0, TAU, 72, ring_color, 5.0)
+	draw_circle(center + Vector2(4, 7), BASE_RADIUS * 1.10, shadow_color)
+	draw_circle(center, BASE_RADIUS * pulse, fill_color)
+	draw_circle(center - Vector2(7, 9), BASE_RADIUS * 0.42, highlight)
+	draw_arc(center, BASE_RADIUS, 0.0, TAU, 72, dark_ring, 5.0)
+	draw_arc(center, BASE_RADIUS + 4.0, -PI * 0.5, -PI * 0.5 + TAU * target_progress, 72, ring_color, 4.0)
+	draw_arc(center, approach_radius, 0.0, TAU, 96, ring_color, 5.0)
 
 	var font := get_theme_default_font()
 	var label_size := font.get_string_size(key_label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30)
+	draw_string(font, center - Vector2(label_size.x * 0.5 - 2.0, -12.0), key_label, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 30, Color(0.08, 0.035, 0.02, 0.8))
 	draw_string(font, center - Vector2(label_size.x * 0.5, -10.0), key_label, HORIZONTAL_ALIGNMENT_LEFT, -1.0, 30, Color.WHITE)

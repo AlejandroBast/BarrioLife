@@ -1,12 +1,1 @@
 res://scripts/BattleScene.gd
-res://scripts/MainMenu.gd
-res://scripts/MusicManager.gd
-res://scripts/PauseMenu.gd
-res://scripts/Player.gd
-res://scripts/TutorialLevel.gd
-res://scripts/WorldMap.gd
-res://scripts/SettingsManager.gd
-res://scripts/GameState.gd
-res://scripts/VictoryScreen.gd
-res://scripts/NeighborhoodLevel.gd
-res://scripts/MilkingMinigame.gd

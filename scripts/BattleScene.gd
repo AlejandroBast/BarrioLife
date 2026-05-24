@@ -13,6 +13,10 @@ const MAX_HEALTH = 100
 const MISS_DAMAGE = 12
 const HIT_SCORE = 100
 const INTRO_DURATION = 3.0
+const PLAYER_WALK_TEXTURE = "res://assets/sprites/player_walk.png"
+const PLAYER_FRAME_REGION = Rect2(0, 0, 256, 682)
+const NOTE_VISUAL_SIZE = Vector2(68.0, 68.0)
+const HIT_ARROW_SIZE = Vector2(78.0, 78.0)
 
 const DIRECTIONS = ["left", "down", "up", "right"]
 const DIR_COLORS = {
@@ -26,6 +30,12 @@ const COLUMN_X = {
 	"down": 555.0,
 	"up": 655.0,
 	"right": 755.0,
+}
+const ARROW_TEXTURES = {
+	"left": "res://assets/sprites/arrows/left.png",
+	"down": "res://assets/sprites/arrows/down.png",
+	"up": "res://assets/sprites/arrows/up.png",
+	"right": "res://assets/sprites/arrows/right.png",
 }
 
 # Patron simple y editable para prototipar la cancion.
@@ -57,6 +67,17 @@ var health: int = MAX_HEALTH
 var song_finished: bool = false
 var battle_finished: bool = false
 var intro_remaining: float = INTRO_DURATION
+var battle_id: String = ""
+var battle_name: String = "Rival"
+var battle_subtitle: String = "Modo practica"
+var rival_portrait_path: String = ""
+var rival_theme_color: Color = Color(0.24, 0.48, 0.82)
+var note_speed: float = NOTE_SPEED
+var hit_window: float = HIT_WINDOW
+var miss_damage: int = MISS_DAMAGE
+var hit_score: int = HIT_SCORE
+var target_score: int = 900
+var max_health: int = MAX_HEALTH
 
 var score_label: Label
 var combo_label: Label
@@ -65,10 +86,12 @@ var health_bar: ProgressBar
 var note_layer: Node2D
 var intro_panel: PanelContainer
 var intro_label: Label
+var battle_title_label: Label
 
 
 func _ready() -> void:
 	MusicManager.stop_music()
+	_apply_selected_battle_config()
 	_build_battle()
 
 
@@ -103,6 +126,35 @@ func _unhandled_input(event: InputEvent) -> void:
 			_try_hit(direction)
 
 
+func _apply_selected_battle_config() -> void:
+	var selected_battle := GameState.get_selected_farm_battle()
+	if selected_battle.is_empty():
+		health = MAX_HEALTH
+		max_health = MAX_HEALTH
+		target_score = 900
+		return
+
+	battle_id = String(selected_battle["id"])
+	battle_name = String(selected_battle["name"])
+	battle_subtitle = String(selected_battle.get("subtitle", "Batalla de granja"))
+	rival_portrait_path = String(selected_battle.get("portrait_path", ""))
+	rival_theme_color = selected_battle.get("theme_color", rival_theme_color) as Color
+	note_speed = float(selected_battle.get("note_speed", NOTE_SPEED))
+	hit_window = float(selected_battle.get("hit_window", HIT_WINDOW))
+	miss_damage = int(selected_battle.get("miss_damage", MISS_DAMAGE))
+	hit_score = int(selected_battle.get("hit_score", HIT_SCORE))
+	target_score = int(selected_battle.get("target_score", 900))
+	intro_remaining = float(selected_battle.get("intro_duration", INTRO_DURATION))
+	max_health = int(selected_battle.get("max_health", MAX_HEALTH))
+	health = max_health
+
+	var selected_pattern := selected_battle.get("pattern", []) as Array
+	if not selected_pattern.is_empty():
+		note_pattern.clear()
+		for entry in selected_pattern:
+			note_pattern.append(entry as Dictionary)
+
+
 func _build_battle() -> void:
 	var background := ColorRect.new()
 	background.color = Color(0.06, 0.055, 0.08)
@@ -119,8 +171,8 @@ func _build_battle() -> void:
 	])
 	add_child(stage_floor)
 
-	_add_performer(Vector2(180, 485), Color(0.82, 0.28, 0.20), "Tu")
-	_add_performer(Vector2(1080, 485), Color(0.24, 0.48, 0.82), "Rival")
+	_add_performer(Vector2(180, 485), Color(0.82, 0.28, 0.20), "Elian", PLAYER_WALK_TEXTURE, true)
+	_add_performer(Vector2(1080, 485), rival_theme_color, battle_name, rival_portrait_path, false)
 	_add_microphone(Vector2(270, 520))
 	_add_microphone(Vector2(995, 520))
 
@@ -128,12 +180,48 @@ func _build_battle() -> void:
 	note_layer.name = "Notes"
 	add_child(note_layer)
 
+	_build_battle_title()
 	_build_columns()
 	_build_ui()
 	_build_intro_panel()
 
 
-func _add_performer(spawn_position: Vector2, color: Color, label_text: String) -> void:
+func _add_performer(spawn_position: Vector2, color: Color, label_text: String, portrait_path: String = "", use_player_atlas: bool = false) -> void:
+	if portrait_path != "" and FileAccess.file_exists(portrait_path):
+		_add_performer_portrait(spawn_position, portrait_path, use_player_atlas)
+	else:
+		_add_placeholder_performer(spawn_position, color)
+
+	var name_label := Label.new()
+	name_label.text = label_text
+	name_label.position = spawn_position + Vector2(-42, 52)
+	name_label.add_theme_font_size_override("font_size", 22)
+	add_child(name_label)
+
+
+func _add_performer_portrait(spawn_position: Vector2, portrait_path: String, use_player_atlas: bool) -> void:
+	var sprite := Sprite2D.new()
+	sprite.position = spawn_position + Vector2(0, -92)
+	sprite.centered = true
+
+	if use_player_atlas:
+		var atlas := AtlasTexture.new()
+		atlas.atlas = load(portrait_path) as Texture2D
+		atlas.region = PLAYER_FRAME_REGION
+		sprite.texture = atlas
+		sprite.scale = Vector2(0.28, 0.28)
+	else:
+		var texture := load(portrait_path) as Texture2D
+		sprite.texture = texture
+		if texture != null:
+			var size := texture.get_size()
+			var scale_factor := minf(250.0 / size.x, 330.0 / size.y)
+			sprite.scale = Vector2.ONE * scale_factor
+
+	add_child(sprite)
+
+
+func _add_placeholder_performer(spawn_position: Vector2, color: Color) -> void:
 	var body := Polygon2D.new()
 	body.position = spawn_position
 	body.color = color
@@ -158,12 +246,6 @@ func _add_performer(spawn_position: Vector2, color: Color, label_text: String) -
 	])
 	add_child(head)
 
-	var name_label := Label.new()
-	name_label.text = label_text
-	name_label.position = spawn_position + Vector2(-42, 52)
-	name_label.add_theme_font_size_override("font_size", 22)
-	add_child(name_label)
-
 
 func _add_microphone(spawn_position: Vector2) -> void:
 	var mic := Line2D.new()
@@ -179,6 +261,20 @@ func _add_microphone(spawn_position: Vector2) -> void:
 	add_child(mic)
 
 
+func _build_battle_title() -> void:
+	battle_title_label = Label.new()
+	battle_title_label.text = "ELIAN VS %s\n%s" % [battle_name, battle_subtitle]
+	battle_title_label.position = Vector2(410, 20)
+	battle_title_label.size = Vector2(460, 58)
+	battle_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	battle_title_label.add_theme_font_size_override("font_size", 24)
+	battle_title_label.add_theme_color_override("font_color", Color(1.0, 0.92, 0.78))
+	battle_title_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	battle_title_label.add_theme_constant_override("shadow_offset_x", 2)
+	battle_title_label.add_theme_constant_override("shadow_offset_y", 2)
+	add_child(battle_title_label)
+
+
 func _build_columns() -> void:
 	for direction in DIRECTIONS:
 		var x_position: float = float(COLUMN_X[direction])
@@ -189,12 +285,10 @@ func _build_columns() -> void:
 		lane.color = Color(1, 1, 1, 0.045)
 		add_child(lane)
 
-		var hit_zone := ColorRect.new()
-		var hit_color: Color = Color(DIR_COLORS[direction])
-		hit_color.a = 0.62
-		hit_zone.position = Vector2(x_position - 34.0, HIT_Y - 34.0)
-		hit_zone.size = Vector2(68.0, 68.0)
-		hit_zone.color = hit_color
+		var hit_zone := _make_arrow_sprite(direction, HIT_ARROW_SIZE)
+		hit_zone.name = "HitZone_%s" % direction
+		hit_zone.position = Vector2(x_position, HIT_Y)
+		hit_zone.modulate.a = 0.72
 		add_child(hit_zone)
 
 		var key_label := Label.new()
@@ -204,6 +298,21 @@ func _build_columns() -> void:
 		key_label.size = Vector2(90.0, 28.0)
 		key_label.add_theme_font_size_override("font_size", 18)
 		add_child(key_label)
+
+
+func _make_arrow_sprite(direction: String, target_size: Vector2) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.centered = true
+	sprite.texture = load(String(ARROW_TEXTURES[direction])) as Texture2D
+
+	if sprite.texture != null:
+		var texture_size := sprite.texture.get_size()
+		var scale_factor := minf(target_size.x / texture_size.x, target_size.y / texture_size.y)
+		sprite.scale = Vector2.ONE * scale_factor
+	else:
+		push_error("No se pudo cargar la flecha de batalla: %s" % String(ARROW_TEXTURES[direction]))
+
+	return sprite
 
 
 func _build_ui() -> void:
@@ -220,14 +329,14 @@ func _build_ui() -> void:
 	health_bar = ProgressBar.new()
 	health_bar.position = Vector2(32, 104)
 	health_bar.size = Vector2(300, 28)
-	health_bar.max_value = MAX_HEALTH
+	health_bar.max_value = max_health
 	health_bar.value = health
 	add_child(health_bar)
 
 	message_label = Label.new()
 	message_label.text = ""
 	message_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	message_label.position = Vector2(500, 28)
+	message_label.position = Vector2(500, 82)
 	message_label.size = Vector2(280, 52)
 	message_label.add_theme_font_size_override("font_size", 34)
 	add_child(message_label)
@@ -272,7 +381,8 @@ func _update_intro(delta: float) -> void:
 
 func _update_intro_text() -> void:
 	var seconds_left: int = int(ceil(intro_remaining))
-	intro_label.text = "Modo practica\nPresiona la tecla que coincida para cantar.\n%s / %s / %s / %s.\nEmpieza en %d..." % [
+	intro_label.text = "%s\nPresiona la tecla que coincida para cantar.\n%s / %s / %s / %s.\nEmpieza en %d..." % [
+		battle_subtitle,
 		SettingsManager.get_action_label("note_left"),
 		SettingsManager.get_action_label("note_down"),
 		SettingsManager.get_action_label("note_up"),
@@ -288,11 +398,9 @@ func _spawn_due_notes() -> void:
 
 
 func _spawn_note(direction: String) -> void:
-	var note := ColorRect.new()
+	var note := _make_arrow_sprite(direction, NOTE_VISUAL_SIZE)
 	note.name = "Note_%s" % direction
-	note.position = Vector2(float(COLUMN_X[direction]) - 28.0, SPAWN_Y)
-	note.size = Vector2(56.0, 56.0)
-	note.color = Color(DIR_COLORS[direction])
+	note.position = Vector2(float(COLUMN_X[direction]), SPAWN_Y)
 	note_layer.add_child(note)
 
 	active_notes.append({
@@ -304,8 +412,8 @@ func _spawn_note(direction: String) -> void:
 func _update_notes(delta: float) -> void:
 	for index in range(active_notes.size() - 1, -1, -1):
 		var note_data: Dictionary = active_notes[index]
-		var note: ColorRect = note_data["node"] as ColorRect
-		note.position.y += NOTE_SPEED * delta
+		var note: Node2D = note_data["node"] as Node2D
+		note.position.y += note_speed * delta
 
 		if note.position.y > MISS_Y:
 			active_notes.remove_at(index)
@@ -322,16 +430,16 @@ func _try_hit(direction: String) -> void:
 		if String(note_data["dir"]) != direction:
 			continue
 
-		var note: ColorRect = note_data["node"] as ColorRect
-		var note_center_y: float = note.position.y + note.size.y * 0.5
+		var note: Node2D = note_data["node"] as Node2D
+		var note_center_y: float = note.position.y
 		var distance: float = abs(note_center_y - HIT_Y)
 		if distance < best_distance:
 			best_distance = distance
 			best_index = index
 
-	if best_index != -1 and best_distance <= HIT_WINDOW:
+	if best_index != -1 and best_distance <= hit_window:
 		var best_note_data: Dictionary = active_notes[best_index]
-		var hit_note: ColorRect = best_note_data["node"] as ColorRect
+		var hit_note: Node2D = best_note_data["node"] as Node2D
 		active_notes.remove_at(best_index)
 		hit_note.queue_free()
 		_register_hit()
@@ -340,7 +448,7 @@ func _try_hit(direction: String) -> void:
 
 
 func _register_hit() -> void:
-	score += HIT_SCORE
+	score += hit_score
 	combo += 1
 	message_label.text = "Good"
 	_update_ui()
@@ -351,7 +459,7 @@ func _register_miss() -> void:
 		return
 
 	combo = 0
-	health = maxi(0, health - MISS_DAMAGE)
+	health = maxi(0, health - miss_damage)
 	message_label.text = "Miss"
 	_update_ui()
 
@@ -360,7 +468,7 @@ func _register_miss() -> void:
 
 
 func _update_ui() -> void:
-	score_label.text = "Puntaje: %d" % score
+	score_label.text = "Puntaje: %d / %d" % [score, target_score]
 	combo_label.text = "Combo: %d" % combo
 	health_bar.value = health
 
@@ -371,7 +479,7 @@ func _check_song_end() -> void:
 
 	if next_note_index >= note_pattern.size() and active_notes.is_empty():
 		song_finished = true
-		if score >= 900 and health > 0:
+		if score >= target_score and health > 0:
 			_finish_battle(VICTORY_SCENE)
 		else:
 			_finish_battle(DEFEAT_SCENE)

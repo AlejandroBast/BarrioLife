@@ -2,11 +2,16 @@ extends Control
 
 const TUTORIAL_SCENE = "res://scenes/TutorialLevel.tscn"
 const NEIGHBORHOOD_SCENE = "res://scenes/NeighborhoodLevel.tscn"
+const FARM_SCENE = "res://scenes/FarmLevel.tscn"
 const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 
 func _ready() -> void:
 	MusicManager.stop_music()
+	if GameState.current_location_id == "farm":
+		var battle := GameState.get_selected_farm_battle()
+		if not battle.is_empty():
+			GameState.complete_farm_battle(String(battle["id"]))
 	if GameState.current_location_id == "neighborhood":
 		GameState.complete_objective("first_battle_won")
 	_build_ui()
@@ -36,7 +41,10 @@ func _build_ui() -> void:
 
 	var return_scene := TUTORIAL_SCENE
 	var return_text := "Volver al tutorial"
-	if GameState.current_location_id == "neighborhood":
+	if GameState.current_location_id == "farm":
+		return_scene = FARM_SCENE
+		return_text = "Volver a la granja"
+	elif GameState.current_location_id == "neighborhood":
 		return_scene = NEIGHBORHOOD_SCENE
 		return_text = "Volver al barrio"
 

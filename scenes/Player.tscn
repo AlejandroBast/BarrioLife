@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_player_script"]
+[ext_resource type="Script" path="res://scripts/GroundShadow.gd" id="2_shadow_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player_body"]
 size = Vector2(54, 132)
@@ -9,6 +10,14 @@ size = Vector2(54, 132)
 collision_layer = 1
 collision_mask = 1
 script = ExtResource("1_player_script")
+
+[node name="GroundShadow" type="Node2D" parent="."]
+position = Vector2(0, -42)
+z_index = -1
+script = ExtResource("2_shadow_script")
+radius = 46.0
+squash = 0.18
+shadow_color = Color(0.026, 0.018, 0.012, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -102)

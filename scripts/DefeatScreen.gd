@@ -2,6 +2,7 @@ extends Control
 
 const BATTLE_SCENE = "res://scenes/BattleScene.tscn"
 const TUTORIAL_SCENE = "res://scenes/TutorialLevel.tscn"
+const FARM_SCENE = "res://scenes/FarmLevel.tscn"
 const MAIN_MENU_SCENE = "res://scenes/MainMenu.tscn"
 
 
@@ -36,9 +37,11 @@ func _build_ui() -> void:
 	retry_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(BATTLE_SCENE))
 	box.add_child(retry_button)
 
-	var tutorial_button := _make_button("Volver al tutorial")
-	tutorial_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(TUTORIAL_SCENE))
-	box.add_child(tutorial_button)
+	var return_scene := FARM_SCENE if GameState.current_location_id == "farm" else TUTORIAL_SCENE
+	var return_text := "Volver a la granja" if GameState.current_location_id == "farm" else "Volver al tutorial"
+	var return_button := _make_button(return_text)
+	return_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(return_scene))
+	box.add_child(return_button)
 
 	var menu_button := _make_button("Menu principal")
 	menu_button.pressed.connect(func() -> void: get_tree().change_scene_to_file(MAIN_MENU_SCENE))

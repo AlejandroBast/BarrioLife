@@ -17,6 +17,7 @@ const BREATH_LIFT = 2.0
 var base_sprite_position: Vector2
 var base_sprite_scale: Vector2
 var breath_time: float = 0.0
+var input_locked: bool = false
 
 
 func _ready() -> void:
@@ -48,12 +49,21 @@ func _physics_process(delta: float) -> void:
 
 
 func _get_move_direction() -> float:
+	if input_locked:
+		return 0.0
+
 	var direction := 0.0
 	if Input.is_action_pressed("move_left"):
 		direction -= 1.0
 	if Input.is_action_pressed("move_right"):
 		direction += 1.0
 	return direction
+
+
+func set_input_locked(is_locked: bool) -> void:
+	input_locked = is_locked
+	if input_locked:
+		velocity.x = 0.0
 
 
 func _setup_sprite_frames() -> void:
