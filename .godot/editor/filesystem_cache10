@@ -6,7 +6,7 @@ barrio-fondo.mp3::AudioStreamMP3::7486481827834165092::1779518707::1779518851::1
 granja-fondo.mp3::AudioStreamMP3::96937626396983579::1779424341::1779427232::1::::<><><>0<>0<>1a6320bb28214ad99958d4ac123dd31d<>res://.godot/imported/granja-fondo.mp3-a7c199fca9ce6b43ff8eb74bc0cfa01c.mp3str::
 pueblo-fondo.mp3::AudioStreamMP3::7566809511128738766::1779426341::1779427231::1::::<><><>0<>0<>68ac2a7ed3484e23fd33ffc210c9bb4d<>res://.godot/imported/pueblo-fondo.mp3-c3755f38c1b629a98cdd4861bda0b49a.mp3str::
 vaca-fondo.mp3::AudioStreamMP3::6160820230803589685::1779591936::1779592700::1::::<><><>0<>0<>45f7402bf49dfa17e1c3e196df2748a2<>res://.godot/imported/vaca-fondo.mp3-7d1ec38d80aa075e56325a10b6dd888f.mp3str::
-::res://assets/sprites/::1779609097
+::res://assets/sprites/::1779611685
 cow.png::CompressedTexture2D::6559977665858984793::1779520076::1779523910::1::::<><><>0<>0<>682e4552ae1fc20214da94d2ee753f9e<>res://.godot/imported/cow.png-58038d56c4af09000d1775ba3cf4dc15.ctex::
 cow_udder.png::CompressedTexture2D::7627344439682044297::1779522540::1779523910::1::::<><><>0<>0<>1c9ad1a34cf5135583d5d97011ac7116<>res://.godot/imported/cow_udder.png-09aa10ec794953ffa20526d77f6e4d31.ctex::
 farm_bg_01.png::CompressedTexture2D::2916768669260396173::1779421754::1779422264::1::::<><><>0<>0<>9e18d3b952bffd7b28940e7b788b61fa<>res://.godot/imported/farm_bg_01.png-d4f5758149756111e7a4d32532d99887.ctex::
@@ -19,7 +19,7 @@ neighborhood_bg_02.png::CompressedTexture2D::7550630683610144021::1779517728::17
 player_walk.png::CompressedTexture2D::5591717712743047325::1779082407::1779082554::1::::<><><>0<>0<>664c0e361a05e64368c4e604ba757340<>res://.godot/imported/player_walk.png-f9563979fa75f138a78c66bd5984c9e5.ctex::
 town_bg_01.png::CompressedTexture2D::2960921116147508442::1779424800::1779425296::1::::<><><>0<>0<>dcfd8dcf6719e692a706449514bc6c48<>res://.godot/imported/town_bg_01.png-c1c0b3b5fa4fadb72bcc56e386c37ac0.ctex::
 town_bg_02.png::CompressedTexture2D::6074129915469632471::1779424969::1779425296::1::::<><><>0<>0<>4145efe753e331e6171d7d2b82c79581<>res://.godot/imported/town_bg_02.png-cf06be3d67ba7f0f60312d06b1bfdd19.ctex::
-::res://assets/sprites/arrows/::1779609097
+::res://assets/sprites/arrows/::1779609612
 down.png::CompressedTexture2D::4632688915610875382::1779608488::1779609612::1::::<><><>0<>0<>3001c440c6a4afd7f841ba96ac59af63<>res://.godot/imported/down.png-c416786c71f4a301219777c764ee4ed9.ctex::
 left.png::CompressedTexture2D::101758789355682699::1779608462::1779609612::1::::<><><>0<>0<>1d0f080d56e150dc9219eeeff27e5c83<>res://.godot/imported/left.png-5d997fad75c552171796a88cd491d1d5.ctex::
 right.png::CompressedTexture2D::7669858677240648350::1779608548::1779609612::1::::<><><>0<>0<>3f2f1824195c0707dc4f39af5a70ac36<>res://.godot/imported/right.png-0e76dc72102606a0e5877576f3922c8b.ctex::
@@ -29,6 +29,12 @@ crop_child.png::CompressedTexture2D::7715526457197305195::1779603950::1779604274
 luis.png::CompressedTexture2D::3523270722225105172::1779603974::1779604274::1::::<><><>0<>0<>7680cdca93051b36678b588c1c1b0e3b<>res://.godot/imported/luis.png-dbe6c90a2954b04ea40d11d8b85ab60d.ctex::
 README.md::TextFile::-1::1779599844::0::1::::<><><>0<>0<><>::
 young_worker.png::CompressedTexture2D::2186538885250642789::1779603971::1779604274::1::::<><><>0<>0<>287ae7396b7728e6da6aacea0a1d70b5<>res://.godot/imported/young_worker.png-f126e4fc438954e6077183d351c0cd42.ctex::
+::res://assets/sprites/ui/::1779612490
+button_plank.png::CompressedTexture2D::667439118153957520::1779612242::1779612846::1::::<><><>0<>0<>fe8c354fe293fec50306755133b16159<>res://.godot/imported/button_plank.png-136bd954626c63fe53fd580e1d9a1ea2.ctex::
+button_plank_source.png::CompressedTexture2D::8604617248309310110::1779611905::1779612847::1::::<><><>0<>0<>9ae918e8f89658301942e30d48e3c70f<>res://.godot/imported/button_plank_source.png-cad1baec2ae0052c8dd50e26307bc0f1.ctex::
+main_menu_bg.png::CompressedTexture2D::2952625182279450371::1779611910::1779612847::1::::<><><>0<>0<>c192fc416bcfef70d18c91404a2bd7f3<>res://.godot/imported/main_menu_bg.png-087469ae1b26a5b237b8094d3e7b8d1b.ctex::
+main_menu_title.png::CompressedTexture2D::4829660241978496409::1779612490::1779612847::1::::<><><>0<>0<>f0ec69b34c610051b0798dd4ff706ca6<>res://.godot/imported/main_menu_title.png-a6f3afc57ce104f26511792807283830.ctex::
+main_menu_title_source.png::CompressedTexture2D::3794599610663711939::1779611907::1779612847::1::::<><><>0<>0<>0fb819bb205b2d4cf6d4179a35993389<>res://.godot/imported/main_menu_title_source.png-92be3866a5f11504cfe871cf36435266.ctex::
 ::res://scenes/::1779589771
 BattleNPC.tscn::PackedScene::3801745381564228429::1779420534::0::1::::<><><>0<>0<><>::uid://kc1walgs6753::::res://scripts/BattleNPC.gd
 BattleScene.tscn::PackedScene::-1::1779079708::0::1::::<><><>0<>0<><>::res://scripts/BattleScene.gd
@@ -58,7 +64,7 @@ GameState.gd::GDScript::8278354145127457736::1779601141::0::1::::<>Node<><>0<>0<
 GroundShadow.gd::GDScript::4506452150852667448::1779588571::0::1::::GroundShadow<>Node2D<><>0<>0<><>::
 HitCircle.gd::GDScript::6586136563606316591::1779587343::0::1::::HitCircle<>Control<><>0<>0<><>::
 LocationScene.gd::GDScript::4843809135166486391::1779515480::0::1::::<>Node2D<><>0<>0<><>::
-MainMenu.gd::GDScript::8901831730655566958::1779515621::0::1::::<>Control<><>0<>0<><>::
+MainMenu.gd::GDScript::8901831730655566958::1779612558::0::1::::<>Control<><>0<>0<><>::
 MilkDrop.gd::GDScript::9026870356186114752::1779591480::0::1::::MilkDrop<>Node2D<><>0<>0<><>::
 MilkingMinigame.gd::GDScript::582991384461050982::1779601083::0::1::::<>Control<><>0<>0<><>::
 MusicManager.gd::GDScript::6013858519640775719::1779516502::0::1::::<>Node<><>0<>0<><>::
