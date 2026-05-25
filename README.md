@@ -49,7 +49,6 @@ El juego incluye diferentes mecánicas que permiten construir una experiencia na
 - Sistema de puntaje, vida, aciertos y errores.
 - Transiciones entre pantallas de victoria y derrota.
 
-> Nota: Actualmente el sistema de ritmo funciona como una base jugable por patrones visuales y precisión del jugador. La música sincronizada puede integrarse en futuras versiones para fortalecer la experiencia musical.
 
 ---
 
